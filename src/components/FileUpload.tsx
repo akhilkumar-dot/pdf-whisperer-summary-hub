@@ -4,12 +4,14 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card } from '@/components/ui/card';
 import { toast } from 'sonner';
-import { Upload, FileText } from 'lucide-react';
+import { Upload, FileText, Eye } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
 const FileUpload = ({ onUploadSuccess }: { onUploadSuccess: (file: File, mode: string) => void }) => {
   const [file, setFile] = useState<File | null>(null);
   const [mode, setMode] = useState<string>("pages");
   const [dragActive, setDragActive] = useState<boolean>(false);
+  const [pdfUrl, setPdfUrl] = useState<string | null>(null);
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
@@ -45,6 +47,10 @@ const FileUpload = ({ onUploadSuccess }: { onUploadSuccess: (file: File, mode: s
       return;
     }
     setFile(selectedFile);
+    
+    // Create a URL for the PDF preview
+    const fileUrl = URL.createObjectURL(selectedFile);
+    setPdfUrl(fileUrl);
   };
 
   const handleSubmit = () => {
@@ -76,6 +82,28 @@ const FileUpload = ({ onUploadSuccess }: { onUploadSuccess: (file: File, mode: s
             {file ? `${(file.size / (1024 * 1024)).toFixed(2)} MB` : "Or click to browse files"}
           </p>
         </div>
+        
+        {file && pdfUrl && (
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="outline" className="flex items-center gap-2">
+                <Eye className="h-4 w-4" /> Preview PDF
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-4xl h-[80vh]">
+              <DialogHeader>
+                <DialogTitle>PDF Preview: {file.name}</DialogTitle>
+              </DialogHeader>
+              <div className="h-full w-full overflow-auto">
+                <iframe 
+                  src={pdfUrl} 
+                  className="w-full h-full" 
+                  title="PDF Preview"
+                />
+              </div>
+            </DialogContent>
+          </Dialog>
+        )}
         
         <div className="flex flex-col sm:flex-row items-center gap-4 w-full max-w-md">
           <Select value={mode} onValueChange={setMode}>

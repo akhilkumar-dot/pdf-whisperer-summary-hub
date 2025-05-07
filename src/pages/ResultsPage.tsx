@@ -74,11 +74,13 @@ const ResultsPage = () => {
   const [summary, setSummary] = useState<string>("");
   const [questions, setQuestions] = useState<any[]>([]);
   const [resources, setResources] = useState<any[]>([]);
+  const [pdfUrl, setPdfUrl] = useState<string | null>(null);
 
   useEffect(() => {
     // In a real app, we would fetch the processed data from an API
     // For now, we'll use session storage and mock data
     const storedFileName = sessionStorage.getItem('fileName');
+    const storedPdfUrl = sessionStorage.getItem('pdfUrl');
     
     if (!storedFileName) {
       toast.error("No file has been uploaded");
@@ -87,6 +89,7 @@ const ResultsPage = () => {
     }
     
     setFileName(storedFileName);
+    setPdfUrl(storedPdfUrl);
     
     // Simulate loading
     const timer = setTimeout(() => {
@@ -124,10 +127,10 @@ const ResultsPage = () => {
           </div>
         ) : (
           <div className="space-y-10">
-            {/* Summary Section */}
+            {/* Summary Section with PDF Preview */}
             <section>
               <h2 className="text-2xl font-bold mb-4">Summary</h2>
-              <SummarySection summary={summary} />
+              <SummarySection summary={summary} pdfUrl={pdfUrl} />
             </section>
 
             {/* Questions Section */}

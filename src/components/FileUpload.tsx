@@ -51,6 +51,9 @@ const FileUpload = ({ onUploadSuccess }: { onUploadSuccess: (file: File, mode: s
     // Create a URL for the PDF preview
     const fileUrl = URL.createObjectURL(selectedFile);
     setPdfUrl(fileUrl);
+    
+    // Store the URL in session storage for later use
+    sessionStorage.setItem('pdfUrl', fileUrl);
   };
 
   const handleSubmit = () => {
@@ -58,6 +61,10 @@ const FileUpload = ({ onUploadSuccess }: { onUploadSuccess: (file: File, mode: s
       toast.error("Please select a file first");
       return;
     }
+    
+    // Store filename in session storage
+    sessionStorage.setItem('fileName', file.name);
+    
     onUploadSuccess(file, mode);
   };
 

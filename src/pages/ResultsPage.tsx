@@ -129,12 +129,13 @@ const ResultsPage = () => {
             <p className="text-lg text-muted-foreground">Processing your document...</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-            {/* PDF Preview Panel */}
-            <div className="lg:col-span-2 order-2 lg:order-1 h-[calc(100vh-200px)] min-h-[500px] sticky top-24">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            {/* PDF Preview Panel - Increased size */}
+            <div className="lg:col-span-6 order-2 lg:order-1 h-[calc(100vh-180px)] min-h-[600px] sticky top-24">
               <div className="bg-white border rounded-lg shadow-sm h-full overflow-hidden">
-                <div className="p-3 border-b bg-muted">
+                <div className="p-3 border-b bg-muted flex justify-between items-center">
                   <h3 className="font-medium">PDF Preview</h3>
+                  {fileName && <span className="text-sm text-muted-foreground">{fileName}</span>}
                 </div>
                 <div className="h-full">
                   {pdfUrl ? (
@@ -152,8 +153,8 @@ const ResultsPage = () => {
               </div>
             </div>
 
-            {/* Results Content */}
-            <div className="lg:col-span-3 order-1 lg:order-2">
+            {/* Results Content - Adjusted size */}
+            <div className="lg:col-span-6 order-1 lg:order-2">
               <Tabs defaultValue="summary" value={activeTab} onValueChange={setActiveTab} className="w-full">
                 <TabsList className="grid grid-cols-3 w-full max-w-md mx-auto mb-8">
                   <TabsTrigger value="summary" className="flex items-center gap-2">
@@ -179,7 +180,7 @@ const ResultsPage = () => {
                 </TabsContent>
                 
                 <TabsContent value="resources" className="mt-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 gap-6">
                     {resources.map((resource) => (
                       <ResourceCard
                         key={resource.id}

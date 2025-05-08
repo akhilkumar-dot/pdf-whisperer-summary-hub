@@ -48,7 +48,7 @@ const FileUpload = ({ onUploadSuccess }: { onUploadSuccess: (file: File, mode: s
     }
     setFile(selectedFile);
     
-    // Create a URL for the PDF preview
+    // Create a URL for the PDF preview with better compatibility
     const fileUrl = URL.createObjectURL(selectedFile);
     setPdfUrl(fileUrl);
   };

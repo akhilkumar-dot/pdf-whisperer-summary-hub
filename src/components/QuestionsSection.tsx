@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
@@ -11,13 +11,15 @@ interface Question {
 
 interface QuestionsSectionProps {
   questions: Question[];
+  title?: string;
+  className?: string;
 }
 
-const QuestionsSection: React.FC<QuestionsSectionProps> = ({ questions }) => {
+const QuestionsSection: React.FC<QuestionsSectionProps> = ({ questions, title = "Generated Questions", className = "" }) => {
   return (
-    <Card>
+    <Card className={className}>
       <CardHeader className="pb-3">
-        <CardTitle>Generated Questions</CardTitle>
+        <CardTitle>{title}</CardTitle>
       </CardHeader>
       <CardContent>
         <Accordion type="single" collapsible className="w-full">

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -6,15 +5,17 @@ import FileUpload from '@/components/FileUpload';
 import FeatureCard from '@/components/FeatureCard';
 import StepCard from '@/components/StepCard';
 import Navbar from '@/components/Navbar';
-import { FileText, Search, Book, Star, Zap, Clock, Sparkles, Globe } from 'lucide-react';
+import { FileText, Search, Book, Star, Zap, Clock, Sparkles, Globe, HelpCircle } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import SummarySection from '@/components/SummarySection';
+import QuestionsSection from '@/components/QuestionsSection';
 
 const Index = () => {
   const navigate = useNavigate();
   const fileUploadRef = React.useRef<HTMLDivElement>(null);
   const featuresRef = React.useRef<HTMLDivElement>(null);
   const howItWorksRef = React.useRef<HTMLDivElement>(null);
+  const faqRef = React.useRef<HTMLDivElement>(null);
 
   const handleScrollToUpload = () => {
     fileUploadRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -34,11 +35,50 @@ const Index = () => {
     navigate('/results');
   };
 
+  // FAQ Data
+  const faqs = [
+    {
+      id: "faq-1",
+      question: "How does PaperPicks generate summaries?",
+      answer: "PaperPicks uses advanced AI technology to analyze the text in your PDF documents, identify key points, and generate concise summaries. Our algorithm focuses on maintaining the original meaning while reducing the content to its essential components."
+    },
+    {
+      id: "faq-2",
+      question: "Is my document data secure?",
+      answer: "Yes, we take data security seriously. Your uploaded documents are processed in a secure environment and are not stored permanently on our servers. All documents are automatically deleted after processing unless you choose to save them in your account."
+    },
+    {
+      id: "faq-3",
+      question: "What types of documents work best with PaperPicks?",
+      answer: "PaperPicks works well with most text-based PDF documents including research papers, articles, reports, and textbooks. Documents with clear section headers and well-structured content typically yield the best results."
+    },
+    {
+      id: "faq-4",
+      question: "Can I customize the length of the summary?",
+      answer: "Currently, our system automatically generates summaries of appropriate length based on the document content. We're working on adding customizable summary length options in a future update."
+    },
+    {
+      id: "faq-5",
+      question: "How accurate are the generated questions?",
+      answer: "Our question generation algorithm is designed to identify core concepts and create relevant questions that help reinforce understanding. While the system is highly effective, it continuously improves with user feedback."
+    },
+    {
+      id: "faq-6",
+      question: "Are there any file size limitations?",
+      answer: "Yes, the current maximum file size for uploads is 20MB. For optimal performance, we recommend documents between 2-50 pages."
+    },
+    {
+      id: "faq-7",
+      question: "Do I need an account to use PaperPicks?",
+      answer: "You can use basic features without an account, but creating a free account allows you to save your documents, access history, and enjoy additional features."
+    }
+  ];
+
   return (
     <div className="min-h-screen">
       <Navbar />
       
-      {/* Hero Section - Modernized */}
+      {/* Hero Section */}
       <section id="home" className="pt-24 pb-16 md:pt-32 md:pb-24 px-4 relative overflow-hidden">
         {/* Background Elements */}
         <div className="absolute top-0 left-0 w-full h-full opacity-10 z-0">
@@ -160,7 +200,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Example Section - New */}
+      {/* Example Section */}
       <section className="section-padding bg-gradient-to-r from-accent/30 to-primary/10">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-12">Example Summary</h2>
@@ -192,7 +232,31 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Testimonials Section - New */}
+      {/* FAQ Section */}
+      <section id="faq" className="section-padding bg-background" ref={faqRef}>
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-4">Frequently Asked Questions</h2>
+          <p className="text-center text-muted-foreground max-w-2xl mx-auto mb-12">
+            Find answers to the most common questions about using PaperPicks
+          </p>
+          
+          <QuestionsSection 
+            title="Frequently Asked Questions" 
+            questions={faqs} 
+            className="border-none shadow-lg"
+          />
+          
+          <div className="mt-12 text-center">
+            <p className="text-lg mb-6">Still have questions?</p>
+            <Button variant="outline" className="flex items-center gap-2 mx-auto">
+              <HelpCircle className="h-4 w-4" />
+              Contact Support
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
       <section className="section-padding bg-background">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-12">What Our Users Say</h2>
@@ -228,7 +292,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* CTA Section - New */}
+      {/* CTA Section */}
       <section className="section-padding bg-primary/10">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-6">Ready to Transform Your Document Experience?</h2>
@@ -260,6 +324,7 @@ const Index = () => {
                 <li><a href="#features" className="text-sm text-muted-foreground hover:text-primary transition-colors">Features</a></li>
                 <li><a href="#how-it-works" className="text-sm text-muted-foreground hover:text-primary transition-colors">How It Works</a></li>
                 <li><a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">Pricing</a></li>
+                <li><a href="#faq" className="text-sm text-muted-foreground hover:text-primary transition-colors">FAQ</a></li>
               </ul>
             </div>
             <div>

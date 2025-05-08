@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card } from '@/components/ui/card';
 import { toast } from 'sonner';
-import { Upload, FileText, Eye } from 'lucide-react';
+import { Upload, FileText, Eye, Save } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
 const FileUpload = ({ onUploadSuccess }: { onUploadSuccess: (file: File, mode: string) => void }) => {
@@ -12,6 +12,7 @@ const FileUpload = ({ onUploadSuccess }: { onUploadSuccess: (file: File, mode: s
   const [mode, setMode] = useState<string>("pages");
   const [dragActive, setDragActive] = useState<boolean>(false);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
+  const [saveToHistory, setSaveToHistory] = useState<boolean>(true);
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
@@ -53,6 +54,34 @@ const FileUpload = ({ onUploadSuccess }: { onUploadSuccess: (file: File, mode: s
     setPdfUrl(fileUrl);
   };
 
+  const saveDocumentToHistory = (fileName: string, pdfUrl: string | null) => {
+    try {
+      // Get existing documents or initialize empty array
+      const existingDocsJson = localStorage.getItem('paperpicks-documents') || '[]';
+      const existingDocs = JSON.parse(existingDocsJson);
+      
+      // Create new document entry
+      const newDoc = {
+        id: Date.now().toString(),
+        fileName,
+        dateAdded: new Date().toLocaleDateString(),
+        fileSize: file ? `${(file.size / (1024 * 1024)).toFixed(2)} MB` : 'Unknown',
+        pdfUrl: pdfUrl
+      };
+      
+      // Add to beginning of array (most recent first)
+      const updatedDocs = [newDoc, ...existingDocs];
+      
+      // Save back to localStorage
+      localStorage.setItem('paperpicks-documents', JSON.stringify(updatedDocs));
+      
+      toast.success('Document saved to history');
+    } catch (error) {
+      console.error('Error saving to history:', error);
+      toast.error('Failed to save document to history');
+    }
+  };
+
   const handleSubmit = () => {
     if (!file) {
       toast.error("Please select a file first");
@@ -66,6 +95,11 @@ const FileUpload = ({ onUploadSuccess }: { onUploadSuccess: (file: File, mode: s
     
     // Store the filename in session storage
     sessionStorage.setItem('fileName', file.name);
+    
+    // Save to history if enabled
+    if (saveToHistory && file.name) {
+      saveDocumentToHistory(file.name, pdfUrl);
+    }
     
     onUploadSuccess(file, mode);
   };
@@ -148,6 +182,21 @@ const FileUpload = ({ onUploadSuccess }: { onUploadSuccess: (file: File, mode: s
             {file ? "Generate Summary" : "Upload PDF"}
           </Button>
         </div>
+        
+        {file && (
+          <div className="flex items-center gap-2 mt-2">
+            <input
+              type="checkbox"
+              id="save-to-history"
+              checked={saveToHistory}
+              onChange={() => setSaveToHistory(!saveToHistory)}
+              className="h-4 w-4"
+            />
+            <label htmlFor="save-to-history" className="text-sm text-muted-foreground">
+              Save document to history
+            </label>
+          </div>
+        )}
       </div>
     </Card>
   );

@@ -1,12 +1,15 @@
+
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { FileText } from 'lucide-react';
+import { FileText, History } from 'lucide-react';
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, navigationMenuTriggerStyle } from '@/components/ui/navigation-menu';
 
 const Navbar: React.FC = () => {
   const location = useLocation();
   const isResultsPage = location.pathname === '/results';
+  const isHistoryPage = location.pathname === '/history';
+  const isHomePage = location.pathname === '/';
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -71,6 +74,12 @@ const Navbar: React.FC = () => {
                   </button>
                 </NavigationMenuItem>
               </>
+            ) : isHistoryPage ? (
+              <NavigationMenuItem>
+                <Link to="/" className={navigationMenuTriggerStyle()}>
+                  Home
+                </Link>
+              </NavigationMenuItem>
             ) : (
               <>
                 <NavigationMenuItem>
@@ -94,11 +103,19 @@ const Navbar: React.FC = () => {
         </NavigationMenu>
         
         {/* CTA Button */}
-        {!isResultsPage && (
-          <Button size="sm" className="hidden sm:flex" onClick={() => scrollToSection('upload')}>
-            Try Now
-          </Button>
-        )}
+        <div className="flex items-center gap-2">
+          <Link to="/history">
+            <Button variant="outline" size="sm" className="hidden sm:flex">
+              <History className="h-4 w-4 mr-2" />
+              History
+            </Button>
+          </Link>
+          {isHomePage && (
+            <Button size="sm" className="hidden sm:flex" onClick={() => scrollToSection('upload')}>
+              Try Now
+            </Button>
+          )}
+        </div>
       </div>
     </div>
   );

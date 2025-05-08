@@ -13,9 +13,15 @@ interface QuestionsSectionProps {
   questions: Question[];
   title?: string;
   className?: string;
+  contentClassName?: string;
 }
 
-const QuestionsSection: React.FC<QuestionsSectionProps> = ({ questions, title = "Generated Questions", className = "" }) => {
+const QuestionsSection: React.FC<QuestionsSectionProps> = ({ 
+  questions, 
+  title = "Generated Questions", 
+  className = "",
+  contentClassName = "bg-accent/30"
+}) => {
   return (
     <Card className={className}>
       <CardHeader className="pb-3">
@@ -27,7 +33,7 @@ const QuestionsSection: React.FC<QuestionsSectionProps> = ({ questions, title = 
             <AccordionItem key={item.id} value={item.id}>
               <AccordionTrigger className="text-left">{item.question}</AccordionTrigger>
               <AccordionContent>
-                <div className="bg-accent/30 p-4 rounded-md mt-2">
+                <div className={`${contentClassName} p-4 rounded-md mt-2`}>
                   <p>{item.answer}</p>
                 </div>
               </AccordionContent>

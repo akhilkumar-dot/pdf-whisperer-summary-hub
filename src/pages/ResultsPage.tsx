@@ -6,6 +6,8 @@ import SummarySection from '@/components/SummarySection';
 import QuestionsSection from '@/components/QuestionsSection';
 import ResourceCard from '@/components/ResourceCard';
 import { toast } from 'sonner';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { FileText, HelpCircle, Link } from 'lucide-react';
 
 // Mock data for demonstration purposes
 const mockSummary = `The document discusses advanced techniques in machine learning, focusing particularly on neural networks and their applications in natural language processing.
@@ -74,6 +76,7 @@ const ResultsPage = () => {
   const [summary, setSummary] = useState<string>("");
   const [questions, setQuestions] = useState<any[]>([]);
   const [resources, setResources] = useState<any[]>([]);
+  const [activeTab, setActiveTab] = useState<string>("summary");
 
   useEffect(() => {
     // In a real app, we would fetch the processed data from an API
@@ -123,22 +126,31 @@ const ResultsPage = () => {
             <p className="text-lg text-muted-foreground">Processing your document...</p>
           </div>
         ) : (
-          <div className="space-y-10">
-            {/* Summary Section */}
-            <section>
-              <h2 className="text-2xl font-bold mb-4">Summary</h2>
+          <Tabs defaultValue="summary" value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <TabsList className="grid grid-cols-3 w-full max-w-md mx-auto mb-8">
+              <TabsTrigger value="summary" className="flex items-center gap-2">
+                <FileText className="w-4 h-4" />
+                <span>Summary</span>
+              </TabsTrigger>
+              <TabsTrigger value="questions" className="flex items-center gap-2">
+                <HelpCircle className="w-4 h-4" />
+                <span>Questions</span>
+              </TabsTrigger>
+              <TabsTrigger value="resources" className="flex items-center gap-2">
+                <Link className="w-4 h-4" />
+                <span>Resources</span>
+              </TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="summary" className="mt-6">
               <SummarySection summary={summary} />
-            </section>
-
-            {/* Questions Section */}
-            <section>
-              <h2 className="text-2xl font-bold mb-4">Generated Questions</h2>
+            </TabsContent>
+            
+            <TabsContent value="questions" className="mt-6">
               <QuestionsSection questions={questions} />
-            </section>
-
-            {/* Resources Section */}
-            <section>
-              <h2 className="text-2xl font-bold mb-4">Related Resources</h2>
+            </TabsContent>
+            
+            <TabsContent value="resources" className="mt-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {resources.map((resource) => (
                   <ResourceCard
@@ -150,8 +162,8 @@ const ResultsPage = () => {
                   />
                 ))}
               </div>
-            </section>
-          </div>
+            </TabsContent>
+          </Tabs>
         )}
       </main>
     </div>

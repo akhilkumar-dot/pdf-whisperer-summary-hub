@@ -77,11 +77,13 @@ const ResultsPage = () => {
   const [questions, setQuestions] = useState<any[]>([]);
   const [resources, setResources] = useState<any[]>([]);
   const [activeTab, setActiveTab] = useState<string>("summary");
+  const [pdfUrl, setPdfUrl] = useState<string | null>(null);
 
   useEffect(() => {
     // In a real app, we would fetch the processed data from an API
     // For now, we'll use session storage and mock data
     const storedFileName = sessionStorage.getItem('fileName');
+    const storedPdfUrl = sessionStorage.getItem('pdfUrl');
     
     if (!storedFileName) {
       toast.error("No file has been uploaded");
@@ -90,6 +92,7 @@ const ResultsPage = () => {
     }
     
     setFileName(storedFileName);
+    setPdfUrl(storedPdfUrl);
     
     // Simulate loading
     const timer = setTimeout(() => {
@@ -126,44 +129,71 @@ const ResultsPage = () => {
             <p className="text-lg text-muted-foreground">Processing your document...</p>
           </div>
         ) : (
-          <Tabs defaultValue="summary" value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid grid-cols-3 w-full max-w-md mx-auto mb-8">
-              <TabsTrigger value="summary" className="flex items-center gap-2">
-                <FileText className="w-4 h-4" />
-                <span>Summary</span>
-              </TabsTrigger>
-              <TabsTrigger value="questions" className="flex items-center gap-2">
-                <HelpCircle className="w-4 h-4" />
-                <span>Questions</span>
-              </TabsTrigger>
-              <TabsTrigger value="resources" className="flex items-center gap-2">
-                <Link className="w-4 h-4" />
-                <span>Resources</span>
-              </TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="summary" className="mt-6">
-              <SummarySection summary={summary} />
-            </TabsContent>
-            
-            <TabsContent value="questions" className="mt-6">
-              <QuestionsSection questions={questions} />
-            </TabsContent>
-            
-            <TabsContent value="resources" className="mt-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {resources.map((resource) => (
-                  <ResourceCard
-                    key={resource.id}
-                    title={resource.title}
-                    description={resource.description}
-                    url={resource.url}
-                    type={resource.type}
-                  />
-                ))}
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+            {/* PDF Preview Panel */}
+            <div className="lg:col-span-2 order-2 lg:order-1 h-[calc(100vh-200px)] min-h-[500px] sticky top-24">
+              <div className="bg-white border rounded-lg shadow-sm h-full overflow-hidden">
+                <div className="p-3 border-b bg-muted">
+                  <h3 className="font-medium">PDF Preview</h3>
+                </div>
+                <div className="h-full">
+                  {pdfUrl ? (
+                    <iframe 
+                      src={pdfUrl} 
+                      className="w-full h-full" 
+                      title="PDF Preview"
+                    />
+                  ) : (
+                    <div className="flex items-center justify-center h-full text-muted-foreground">
+                      PDF preview not available
+                    </div>
+                  )}
+                </div>
               </div>
-            </TabsContent>
-          </Tabs>
+            </div>
+
+            {/* Results Content */}
+            <div className="lg:col-span-3 order-1 lg:order-2">
+              <Tabs defaultValue="summary" value={activeTab} onValueChange={setActiveTab} className="w-full">
+                <TabsList className="grid grid-cols-3 w-full max-w-md mx-auto mb-8">
+                  <TabsTrigger value="summary" className="flex items-center gap-2">
+                    <FileText className="w-4 h-4" />
+                    <span>Summary</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="questions" className="flex items-center gap-2">
+                    <HelpCircle className="w-4 h-4" />
+                    <span>Questions</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="resources" className="flex items-center gap-2">
+                    <Link className="w-4 h-4" />
+                    <span>Resources</span>
+                  </TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="summary" className="mt-6">
+                  <SummarySection summary={summary} />
+                </TabsContent>
+                
+                <TabsContent value="questions" className="mt-6">
+                  <QuestionsSection questions={questions} />
+                </TabsContent>
+                
+                <TabsContent value="resources" className="mt-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {resources.map((resource) => (
+                      <ResourceCard
+                        key={resource.id}
+                        title={resource.title}
+                        description={resource.description}
+                        url={resource.url}
+                        type={resource.type}
+                      />
+                    ))}
+                  </div>
+                </TabsContent>
+              </Tabs>
+            </div>
+          </div>
         )}
       </main>
     </div>

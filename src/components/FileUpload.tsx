@@ -58,6 +58,15 @@ const FileUpload = ({ onUploadSuccess }: { onUploadSuccess: (file: File, mode: s
       toast.error("Please select a file first");
       return;
     }
+    
+    // Store the PDF URL in session storage for use in the results page
+    if (pdfUrl) {
+      sessionStorage.setItem('pdfUrl', pdfUrl);
+    }
+    
+    // Store the filename in session storage
+    sessionStorage.setItem('fileName', file.name);
+    
     onUploadSuccess(file, mode);
   };
 

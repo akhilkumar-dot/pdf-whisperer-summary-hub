@@ -16,7 +16,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 263 80% 60%;
+    --primary: 250 82% 51%;
     --primary-foreground: 210 40% 98%;
 
     --secondary: 210 40% 96.1%;
@@ -25,7 +25,7 @@
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 280 70% 95%;
+    --accent: 260 90% 95%;
     --accent-foreground: 222.2 47.4% 11.2%;
 
     --destructive: 0 84.2% 60.2%;
@@ -33,9 +33,9 @@
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 263 80% 60%;
+    --ring: 250 82% 51%;
 
-    --radius: 0.75rem;
+    --radius: 1rem;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -58,7 +58,7 @@
 
 @layer components {
   .hero-gradient {
-    background: linear-gradient(to right, rgba(102, 51, 238, 0.1), rgba(150, 67, 235, 0.05));
+    background: linear-gradient(135deg, rgba(79, 42, 255, 0.15), rgba(124, 58, 237, 0.05));
   }
   
   .btn-hover {
@@ -72,4 +72,23 @@
   .card-shadow {
     @apply shadow-lg hover:shadow-xl transition-shadow duration-300;
   }
+
+  .glass-effect {
+    @apply bg-white/80 backdrop-blur-sm border border-white/30;
+  }
+  
+  .card-gradient {
+    @apply bg-gradient-to-br from-primary/10 via-accent/15 to-white;
+  }
+  
+  .animated-border {
+    @apply relative before:absolute before:inset-0 before:p-[2px] before:rounded-md before:bg-gradient-to-r before:from-primary before:to-purple-400 before:content-[''] before:-z-10;
+  }
 }
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary to-violet-500 bg-clip-text text-transparent;
+  }
+}
+

@@ -13,12 +13,12 @@ interface FlowStepProps {
 const FlowStep: React.FC<FlowStepProps> = ({ number, title, description, isLast = false }) => {
   return (
     <div className="flex flex-col items-center">
-      <Card className="card-shadow w-full overflow-hidden border-0 relative bg-gradient-to-br from-primary/10 to-accent/20">
-        <div className="absolute -top-6 -left-6 w-16 h-16 rounded-full bg-gradient-to-r from-primary to-primary/80 flex items-center justify-center text-white font-bold text-xl shadow-lg">
+      <Card className="card-shadow w-full overflow-hidden border border-white/20 relative card-gradient">
+        <div className="absolute -top-6 -left-6 w-16 h-16 rounded-full bg-gradient-to-br from-primary to-violet-500 flex items-center justify-center text-white font-bold text-xl shadow-lg">
           {number}
         </div>
         <CardContent className="pt-12 pb-8 px-6">
-          <h3 className="text-xl font-semibold mb-3 text-primary">{title}</h3>
+          <h3 className="text-xl font-semibold mb-3 text-gradient">{title}</h3>
           <p className="text-muted-foreground">{description}</p>
         </CardContent>
       </Card>
@@ -31,7 +31,7 @@ const FlowStep: React.FC<FlowStepProps> = ({ number, title, description, isLast 
       
       {!isLast && (
         <div className="hidden md:flex items-center justify-center mx-2">
-          <ArrowRight className="h-12 w-12 text-primary drop-shadow my-2 animate-pulse-slow" />
+          <ArrowRight className="h-12 w-12 text-primary drop-shadow-md my-2 animate-pulse-slow" />
         </div>
       )}
     </div>

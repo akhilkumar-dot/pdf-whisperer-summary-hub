@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import FileUpload from '@/components/FileUpload';
 import FeatureCard from '@/components/FeatureCard';
-import StepCard from '@/components/StepCard';
+import FlowStep from '@/components/FlowStep';
 import Navbar from '@/components/Navbar';
 import { FileText, Search, Book, Star, Zap, Clock, Sparkles, Globe, HelpCircle } from 'lucide-react';
 import { Card } from '@/components/ui/card';
@@ -142,30 +142,31 @@ const Index = () => {
         </div>
       </section>
 
-      {/* How It Works Section */}
+      {/* How It Works Section - Updated to Flow Chart */}
       <section id="how-it-works" className="section-padding bg-accent/20" ref={howItWorksRef}>
         <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-            <StepCard
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-0">
+            <FlowStep
               number={1}
               title="Upload your PDF"
               description="Select or drag & drop your document in our secure uploader"
             />
-            <StepCard
+            <FlowStep
               number={2}
               title="Get Summary"
               description="Our AI analyzes your document and creates a comprehensive summary"
             />
-            <StepCard
+            <FlowStep
               number={3}
               title="Generate Questions"
               description="Review key questions derived from your document content"
             />
-            <StepCard
+            <FlowStep
               number={4}
               title="Receive Resources"
               description="Get curated resources related to your document topic"
+              isLast={true}
             />
           </div>
         </div>

@@ -142,42 +142,32 @@ const Index = () => {
         </div>
       </section>
 
-      {/* How It Works Section - Updated to match image */}
-      <section id="how-it-works" className="section-padding bg-accent/10" ref={howItWorksRef}>
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl font-bold text-center mb-4">How It Works</h2>
-          <p className="text-center text-muted-foreground text-lg max-w-3xl mx-auto mb-16">
-            Transform any PDF document into comprehensive learning materials in just a few simple steps.
-          </p>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-x-12 gap-y-12 relative">
-            <div className="relative md:px-8 py-4">
-              <FlowStep
-                number={1}
-                title="Upload Your PDF"
-                description="Simply upload any PDF document you want to learn from into our secure system. It works with academic papers, textbooks, reports, and more."
-                accent="#9b87f5"
-              />
-            </div>
-            
-            <div className="relative md:px-8 py-4">
-              <FlowStep
-                number={2}
-                title="AI Processing"
-                description="Our advanced AI analyzes the document content, extracting key information, concepts, and knowledge points. The AI understands context and identifies the most important parts."
-                accent="#9b87f5"
-              />
-            </div>
-            
-            <div className="relative md:px-8 py-4">
-              <FlowStep
-                number={3}
-                title="Get Learning Materials"
-                description="Within seconds, receive a complete set of learning materials including summaries, questions, and related resources. Save time and learn more effectively."
-                isLast={true}
-                accent="#9b87f5"
-              />
-            </div>
+      {/* How It Works Section - Updated to Flow Chart */}
+      <section id="how-it-works" className="section-padding bg-accent/20" ref={howItWorksRef}>
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-0">
+            <FlowStep
+              number={1}
+              title="Upload your PDF"
+              description="Select or drag & drop your document in our secure uploader"
+            />
+            <FlowStep
+              number={2}
+              title="Get Summary"
+              description="Our AI analyzes your document and creates a comprehensive summary"
+            />
+            <FlowStep
+              number={3}
+              title="Generate Questions"
+              description="Review key questions derived from your document content"
+            />
+            <FlowStep
+              number={4}
+              title="Receive Resources"
+              description="Get curated resources related to your document topic"
+              isLast={true}
+            />
           </div>
         </div>
       </section>

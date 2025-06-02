@@ -9,6 +9,7 @@ import { FileText, Search, Book, Star, Zap, Clock, Sparkles, Globe, HelpCircle }
 import { Card } from '@/components/ui/card';
 import SummarySection from '@/components/SummarySection';
 import QuestionsSection from '@/components/QuestionsSection';
+import HowItWorks from '@/components/HowItWorks';
 
 const Index = () => {
   const navigate = useNavigate();
@@ -146,29 +147,7 @@ const Index = () => {
       <section id="how-it-works" className="section-padding bg-accent/20" ref={howItWorksRef}>
         <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-0">
-            <FlowStep
-              number={1}
-              title="Upload your PDF"
-              description="Select or drag & drop your document in our secure uploader"
-            />
-            <FlowStep
-              number={2}
-              title="Get Summary"
-              description="Our AI analyzes your document and creates a comprehensive summary"
-            />
-            <FlowStep
-              number={3}
-              title="Generate Questions"
-              description="Review key questions derived from your document content"
-            />
-            <FlowStep
-              number={4}
-              title="Receive Resources"
-              description="Get curated resources related to your document topic"
-              isLast={true}
-            />
-          </div>
+          <HowItWorks />
         </div>
       </section>
 

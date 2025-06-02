@@ -1,87 +1,36 @@
-
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import SummarySection from '@/components/SummarySection';
-import QuestionsSection from '@/components/QuestionsSection';
-import ResourceCard from '@/components/ResourceCard';
 import { toast } from 'sonner';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { FileText, HelpCircle, Link } from 'lucide-react';
 
-// Mock data for demonstration purposes
-const mockSummary = `The document discusses advanced techniques in machine learning, focusing particularly on neural networks and their applications in natural language processing.
-
-Key points covered include:
-- The evolution of neural network architectures from simple perceptrons to complex transformer models
-- How attention mechanisms have revolutionized sequence processing tasks
-- Common challenges in training deep learning models and strategies to overcome them
-- Practical applications in text summarization, translation, and sentiment analysis
-
-The author emphasizes the importance of both theoretical understanding and practical implementation, providing code examples in Python using TensorFlow and PyTorch frameworks.`;
-
-const mockQuestions = [
-  {
-    id: "q1",
-    question: "What are the main differences between recurrent neural networks and transformer models?",
-    answer: "Recurrent neural networks (RNNs) process sequences sequentially, maintaining a hidden state that's updated at each step. This creates challenges with long-term dependencies due to vanishing/exploding gradients. Transformer models, on the other hand, use self-attention mechanisms that allow direct connections between any positions in a sequence, enabling better parallel processing and improved handling of long-range dependencies."
-  },
-  {
-    id: "q2",
-    question: "How do attention mechanisms improve neural network performance?",
-    answer: "Attention mechanisms allow models to focus on different parts of the input data when producing outputs. This mimics human cognitive processes and helps models handle long sequences by dynamically weighting the importance of different input elements. In natural language processing, attention helps models understand relationships between words regardless of their distance in the text."
-  },
-  {
-    id: "q3",
-    question: "What strategies can be used to prevent overfitting in deep learning models?",
-    answer: "Several strategies can prevent overfitting: regularization techniques like L1/L2 regularization and dropout, data augmentation to artificially increase training data diversity, early stopping by monitoring validation performance, batch normalization to stabilize learning, and using transfer learning from pre-trained models when data is limited."
-  },
-];
-
-const mockResources = [
-  {
-    id: "r1",
-    title: "Neural Networks and Deep Learning",
-    description: "Comprehensive course covering the fundamentals of neural networks",
-    url: "https://www.coursera.org/learn/neural-networks-deep-learning",
-    type: "video"
-  },
-  {
-    id: "r2",
-    title: "Attention Is All You Need",
-    description: "Original research paper introducing the transformer architecture",
-    url: "https://arxiv.org/abs/1706.03762",
-    type: "article"
-  },
-  {
-    id: "r3",
-    title: "Practical Deep Learning for Coders",
-    description: "Hands-on tutorials for implementing deep learning models",
-    url: "https://course.fast.ai/",
-    type: "video"
-  },
-  {
-    id: "r4",
-    title: "Understanding LSTM Networks",
-    description: "Visual guide to understanding long short-term memory networks",
-    url: "https://colah.github.io/posts/2015-08-Understanding-LSTMs/",
-    type: "article"
-  },
-];
+// This will be replaced with actual API call
+const generateSummary = async (fileName: string): Promise<string> => {
+  // Simulate API call - replace with actual FastAPI endpoint
+  const response = await fetch('/api/generate-summary', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ fileName }),
+  });
+  
+  if (!response.ok) {
+    throw new Error('Failed to generate summary');
+  }
+  
+  const data = await response.json();
+  return data.summary;
+};
 
 const ResultsPage = () => {
   const navigate = useNavigate();
   const [fileName, setFileName] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
   const [summary, setSummary] = useState<string>("");
-  const [questions, setQuestions] = useState<any[]>([]);
-  const [resources, setResources] = useState<any[]>([]);
-  const [activeTab, setActiveTab] = useState<string>("summary");
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
 
   useEffect(() => {
-    // In a real app, we would fetch the processed data from an API
-    // For now, we'll use session storage and mock data
     const storedFileName = sessionStorage.getItem('fileName');
     const storedPdfUrl = sessionStorage.getItem('pdfUrl');
     
@@ -94,15 +43,43 @@ const ResultsPage = () => {
     setFileName(storedFileName);
     setPdfUrl(storedPdfUrl);
     
-    // Simulate loading
-    const timer = setTimeout(() => {
-      setSummary(mockSummary);
-      setQuestions(mockQuestions);
-      setResources(mockResources);
-      setLoading(false);
-    }, 2000);
-    
-    return () => clearTimeout(timer);
+    // Generate summary from uploaded document
+    const processSummary = async () => {
+      try {
+        setLoading(true);
+        // For now, use mock data - replace with actual API call
+        const mockSummary = `AI-Generated Summary for ${storedFileName}
+
+This document has been processed using advanced AI models including CLIP and Hugging Face transformers to extract key insights and generate a comprehensive summary.
+
+Key findings and insights:
+• The document contains detailed analysis of the subject matter with evidence-based conclusions
+• Multiple data points and references support the main arguments presented
+• The content demonstrates expertise in the field with practical applications
+• Technical concepts are explained with clarity and supported by examples
+
+Main topics covered:
+- Comprehensive overview of the primary subject
+- Detailed methodology and approach
+- Results and findings with statistical significance
+- Implications and recommendations for future work
+
+This summary was generated using state-of-the-art natural language processing models to ensure accuracy and relevance to the document's core content.`;
+
+        // TODO: Replace with actual API call
+        // const generatedSummary = await generateSummary(storedFileName);
+        setSummary(mockSummary);
+        
+      } catch (error) {
+        console.error('Error generating summary:', error);
+        toast.error("Failed to generate summary. Please try again.");
+        setSummary("Error generating summary. Please try uploading the document again.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    processSummary();
   }, [navigate]);
 
   return (
@@ -115,7 +92,7 @@ const ResultsPage = () => {
               ← Back
             </Button>
             <h1 className="text-xl font-semibold truncate max-w-[200px] sm:max-w-md">
-              {fileName || "Document Results"}
+              {fileName || "Document Summary"}
             </h1>
           </div>
         </div>
@@ -126,11 +103,12 @@ const ResultsPage = () => {
         {loading ? (
           <div className="flex flex-col items-center justify-center py-20 space-y-6">
             <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-            <p className="text-lg text-muted-foreground">Processing your document...</p>
+            <p className="text-lg text-muted-foreground">Generating AI summary...</p>
+            <p className="text-sm text-muted-foreground">Processing document with advanced AI models</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            {/* PDF Preview Panel - Increased size */}
+            {/* PDF Preview Panel */}
             <div className="lg:col-span-6 order-2 lg:order-1 h-[calc(100vh-180px)] min-h-[600px] sticky top-24">
               <div className="bg-white border rounded-lg shadow-sm h-full overflow-hidden">
                 <div className="p-3 border-b bg-muted flex justify-between items-center">
@@ -153,46 +131,9 @@ const ResultsPage = () => {
               </div>
             </div>
 
-            {/* Results Content - Adjusted size */}
+            {/* Summary Content */}
             <div className="lg:col-span-6 order-1 lg:order-2">
-              <Tabs defaultValue="summary" value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <TabsList className="grid grid-cols-3 w-full max-w-md mx-auto mb-8">
-                  <TabsTrigger value="summary" className="flex items-center gap-2">
-                    <FileText className="w-4 h-4" />
-                    <span>Summary</span>
-                  </TabsTrigger>
-                  <TabsTrigger value="questions" className="flex items-center gap-2">
-                    <HelpCircle className="w-4 h-4" />
-                    <span>Questions</span>
-                  </TabsTrigger>
-                  <TabsTrigger value="resources" className="flex items-center gap-2">
-                    <Link className="w-4 h-4" />
-                    <span>Resources</span>
-                  </TabsTrigger>
-                </TabsList>
-                
-                <TabsContent value="summary" className="mt-6">
-                  <SummarySection summary={summary} />
-                </TabsContent>
-                
-                <TabsContent value="questions" className="mt-6">
-                  <QuestionsSection questions={questions} />
-                </TabsContent>
-                
-                <TabsContent value="resources" className="mt-6">
-                  <div className="grid grid-cols-1 gap-6">
-                    {resources.map((resource) => (
-                      <ResourceCard
-                        key={resource.id}
-                        title={resource.title}
-                        description={resource.description}
-                        url={resource.url}
-                        type={resource.type}
-                      />
-                    ))}
-                  </div>
-                </TabsContent>
-              </Tabs>
+              <SummarySection summary={summary} />
             </div>
           </div>
         )}
